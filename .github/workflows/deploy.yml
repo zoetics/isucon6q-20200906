@@ -1,0 +1,28 @@
+name: Deploy to EC2 Instances
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  start:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: exec make command
+        uses: peterkimzz/aws-ssm-send-command@1.0.2
+        id: ssm
+        with:
+          aws-region: ${{ secrets.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          instance-ids: ${{ secrets.INSTANCE_ID }}
+
+          working-directory: /home/isucon/isucon6q-20200906/webapp
+          command: make
+
+      # Catch SSM outputs
+      - name: get the outputs
+        run: echo "The Command id is ${{ steps.ssm.outputs.command-id }}"
