@@ -341,7 +341,7 @@ func htmlify(w http.ResponseWriter, r *http.Request, content string) string {
 
 		kw := regexp.QuoteMeta(entry.Keyword)
 
-		path,_ := r.URL.Parse(baseUrl.String()+"/keyword/"+pathURIEscape(kw))
+		path, _ := r.URL.Parse(baseUrl.String() + "/keyword/" + pathURIEscape(kw))
 		d := Data{
 			Keyword: kw,
 			Hash:    "isuda_" + fmt.Sprintf("%x", sha1.Sum([]byte(kw))),
@@ -349,22 +349,49 @@ func htmlify(w http.ResponseWriter, r *http.Request, content string) string {
 		}
 		keywords2 = append(keywords2, d)
 	}
-	re := regexp.MustCompile("(" + strings.Join(keywords, "|") + ")")
-	kw2sha := make(map[string]string)
-	content = re.ReplaceAllStringFunc(content, func(kw string) string {
-		kw2sha[kw] = "isuda_" + fmt.Sprintf("%x", sha1.Sum([]byte(kw)))
-		return kw2sha[kw]
-	})
-	content = html.EscapeString(content)
-	log.Println("kw2sha:", kw2sha)
-	log.Println("~~~~~~~~~~~~")
-	log.Println(keywords2)
-	for kw, hash := range kw2sha {
-		u, err := r.URL.Parse(baseUrl.String() + "/keyword/" + pathURIEscape(kw))
-		panicIf(err)
-		link := fmt.Sprintf("<a href=\"%s\">%s</a>", u, html.EscapeString(kw))
-		content = strings.Replace(content, hash, link, -1)
+
+	// content内に存在したkeywordのリスト
+	hasKeywords := make([]Data, 0, 500)
+	// content内のkeywordを検出してhashに置き換え, このときに一致したkeywordだけのリストを作っておく
+	//   L for range で keyword
+	for _, d := range keywords2 {
+		// d.Keywordがcontent内に存在するか
+		// contains の速さしだい
+
+		// 含まれていないときはskip
+		if !strings.Contains(content, d.Keyword) {
+			continue
+		}
+
+		// 存在していればhashに置き換える
+		// contentの中にd.keywordがあったら、その文字をd.Hashに変換する
+		replace := strings.ReplaceAll(content, d.Keyword, d.Hash)
+
+		// 置き換えた場合は一致リストにdを入れておく
+		hasKeywords = append(hasKeywords, d)
 	}
+log.Println(content)
+	// 一致したkeywordのリストをもとにhashからリンクに置き換え
+	// for _, d := range hasKeywords {
+
+	// }
+
+	// re := regexp.MustCompile("(" + strings.Join(keywords, "|") + ")")
+	// kw2sha := make(map[string]string)
+	// content = re.ReplaceAllStringFunc(content, func(kw string) string {
+	// 	kw2sha[kw] = "isuda_" + fmt.Sprintf("%x", sha1.Sum([]byte(kw)))
+	// 	return kw2sha[kw]
+	// })
+	// content = html.EscapeString(content)
+	// log.Println("kw2sha:", kw2sha)
+	// log.Println("~~~~~~~~~~~~")
+	// log.Println(keywords2)
+	// for kw, hash := range kw2sha {
+	// 	u, err := r.URL.Parse(baseUrl.String() + "/keyword/" + pathURIEscape(kw))
+	// 	panicIf(err)
+	// 	link := fmt.Sprintf("<a href=\"%s\">%s</a>", u, html.EscapeString(kw))
+	// 	content = strings.Replace(content, hash, link, -1)
+	// }
 	return strings.Replace(content, "\n", "<br />\n", -1)
 }
 
