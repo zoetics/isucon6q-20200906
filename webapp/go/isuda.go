@@ -114,7 +114,7 @@ func topHandler(w http.ResponseWriter, r *http.Request) {
 	rows.Close()
 
 	var totalEntries int
-	row := db.QueryRow(`SELECT COUNT(*) FROM entry`)
+	row := db.QueryRow(`SELECT COUNT(id) FROM entry`)
 	err = row.Scan(&totalEntries)
 	if err != nil && err != sql.ErrNoRows {
 		panicIf(err)
@@ -313,7 +313,7 @@ func htmlify(w http.ResponseWriter, r *http.Request, content string) string {
 	}
 	content = html.EscapeString(content)
 	rows, err := db.Query(`
-		SELECT * FROM entry ORDER BY CHARACTER_LENGTH(keyword) DESC
+		SELECT  FROM entry ORDER BY CHARACTER_LENGTH(keyword) DESC
 	`)
 	panicIf(err)
 	entries := make([]*Entry, 0, 500)
