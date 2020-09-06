@@ -23,6 +23,9 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
 	"github.com/unrolled/render"
+
+	_ "net/http/pprof"
+	"runtime"
 )
 
 const (
@@ -390,6 +393,14 @@ func getSession(w http.ResponseWriter, r *http.Request) *sessions.Session {
 }
 
 func main() {
+	// pprof
+	runtime.SetBlockProfileRate(1)
+	runtime.SetMutexProfileFraction(1)
+	go func() {
+		log.Println(http.ListenAndServe("0.0.0.0:6060", nil))
+	}()
+	// pprof
+
 	host := os.Getenv("ISUDA_DB_HOST")
 	if host == "" {
 		host = "localhost"
