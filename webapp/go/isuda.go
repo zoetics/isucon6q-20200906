@@ -365,12 +365,12 @@ func htmlify(w http.ResponseWriter, r *http.Request, content string) string {
 
 		// 存在していればhashに置き換える
 		// contentの中にd.keywordがあったら、その文字をd.Hashに変換する
-		replace := strings.ReplaceAll(content, d.Keyword, d.Hash)
+		content = strings.ReplaceAll(content, d.Keyword, d.Hash)
 
 		// 置き換えた場合は一致リストにdを入れておく
 		hasKeywords = append(hasKeywords, d)
 	}
-log.Println(content)
+	log.Println(content)
 	// 一致したkeywordのリストをもとにhashからリンクに置き換え
 	// for _, d := range hasKeywords {
 
