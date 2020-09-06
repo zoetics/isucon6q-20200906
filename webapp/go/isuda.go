@@ -355,7 +355,7 @@ func htmlify(w http.ResponseWriter, r *http.Request, content string) string {
 		// ]
 	}
 
-	re := strings.NewReplacer(...keywords2)
+	re := strings.NewReplacer(keywords2...)
 	content = re.Replace(content)
 	
 	// content内に存在したkeywordのリスト
