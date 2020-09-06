@@ -27,143 +27,36 @@ jobs:
 
       - name: exec git checkout master for app1
         uses: peterkimzz/aws-ssm-send-command@1.0.4
-        id: id
+        id: 1
         with:
           aws-region: ${{ secrets.AWS_REGION }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           instance-ids: ${{ secrets.INSTANCE_ID_1 }}
-
           shell: bash
           working-directory: /home/isucon/isucon6q-20200906
-          command: source /root/.bashrc
+          command: /bin/sh githubactions.sh
 
-      - name: exec git checkout master for app1
-        uses: peterkimzz/aws-ssm-send-command@1.0.4
-        id: echo
-        with:
-          aws-region: ${{ secrets.AWS_REGION }}
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          instance-ids: ${{ secrets.INSTANCE_ID_1 }}
-
-          shell: bash
-          working-directory: /home/isucon/isucon6q-20200906
-          command: echo $GOCACHE
-        
-      - name: exec git checkout master for app1
-        uses: peterkimzz/aws-ssm-send-command@1.0.4
-        id: ssm1
-        with:
-          aws-region: ${{ secrets.AWS_REGION }}
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          instance-ids: ${{ secrets.INSTANCE_ID_1 }}
-
-          shell: bash
-          working-directory: /home/isucon/isucon6q-20200906
-          command: git checkout master
-        
-      - name: exec git pull origin master for app1
-        uses: peterkimzz/aws-ssm-send-command@1.0.4
-        id: ssm2
-        with:
-          aws-region: ${{ secrets.AWS_REGION }}
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          instance-ids: ${{ secrets.INSTANCE_ID_1 }}
-
-          shell: bash
-          working-directory: /home/isucon/isucon6q-20200906
-          command: git pull origin master 
-
-      - name: exec make command for app1
-        uses: peterkimzz/aws-ssm-send-command@1.0.4
-        id: ssm3
-        with:
-          aws-region: ${{ secrets.AWS_REGION }}
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          instance-ids: ${{ secrets.INSTANCE_ID_1 }}
-
-          shell: bash
-          working-directory: /home/isucon/isucon6q-20200906/webapp
-          command: make
-      
       - name: exec git checkout master for app2
         uses: peterkimzz/aws-ssm-send-command@1.0.4
-        id: ssm4
+        id: 2
         with:
           aws-region: ${{ secrets.AWS_REGION }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           instance-ids: ${{ secrets.INSTANCE_ID_2 }}
-
           shell: bash
           working-directory: /home/isucon/isucon6q-20200906
-          command: git checkout master
-        
-      - name: exec git pull origin master for app2
-        uses: peterkimzz/aws-ssm-send-command@1.0.4
-        id: ssm5
-        with:
-          aws-region: ${{ secrets.AWS_REGION }}
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          instance-ids: ${{ secrets.INSTANCE_ID_2 }}
-
-          shell: bash
-          working-directory: /home/isucon/isucon6q-20200906
-          command: git pull origin master 
-
-      - name: exec make command for app2
-        uses: peterkimzz/aws-ssm-send-command@1.0.4
-        id: ssm6
-        with:
-          aws-region: ${{ secrets.AWS_REGION }}
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          instance-ids: ${{ secrets.INSTANCE_ID_2 }}
-
-          shell: bash
-          working-directory: /home/isucon/isucon6q-20200906/webapp
-          command: make
+          command: /bin/sh githubactions.sh
 
       - name: exec git checkout master for app3
         uses: peterkimzz/aws-ssm-send-command@1.0.4
-        id: ssm7
+        id: 3
         with:
           aws-region: ${{ secrets.AWS_REGION }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           instance-ids: ${{ secrets.INSTANCE_ID_3 }}
-
           shell: bash
           working-directory: /home/isucon/isucon6q-20200906
-          command: git checkout master
-        
-      - name: exec git pull origin master for app3
-        uses: peterkimzz/aws-ssm-send-command@1.0.4
-        id: ssm8
-        with:
-          aws-region: ${{ secrets.AWS_REGION }}
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          instance-ids: ${{ secrets.INSTANCE_ID_3 }}
-
-          shell: bash
-          working-directory: /home/isucon/isucon6q-20200906
-          command: git pull origin master 
-
-      - name: exec make command for app3
-        uses: peterkimzz/aws-ssm-send-command@1.0.4
-        id: ssm9
-        with:
-          aws-region: ${{ secrets.AWS_REGION }}
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          instance-ids: ${{ secrets.INSTANCE_ID_3 }}
-
-          shell: bash
-          working-directory: /home/isucon/isucon6q-20200906/webapp
-          command: make
+          command: /bin/sh githubactions.sh
