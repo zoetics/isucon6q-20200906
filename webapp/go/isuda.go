@@ -328,63 +328,73 @@ func htmlify(w http.ResponseWriter, r *http.Request, content string) string {
 
 	type Data struct {
 		Keyword string
-		Hash    string
+		// Hash    string
 		Url     string
 	}
 
-	keywords2 := make([]Data, 0, 500)
+	keywords2 := make([]string, 0, 1000)
 
-	keywords := make([]string, 0, 500)
+	// keywords := make([]string, 0, 500)
 
 	for _, entry := range entries {
 
-		keywords = append(keywords, regexp.QuoteMeta(entry.Keyword))
+		// keywords = append(keywords, regexp.QuoteMeta(entry.Keyword))
 
 		kw := entry.Keyword
-
 		path, _ := r.URL.Parse(baseUrl.String() + "/keyword/" + pathURIEscape(kw))
-		d := Data{
-			Keyword: kw,
-			Hash:    "isuda_" + fmt.Sprintf("%x", sha1.Sum([]byte(kw))),
-			Url:     fmt.Sprintf("<a href=\"%s\">%s</a>", path, html.EscapeString(kw)),
-		}
-		keywords2 = append(keywords2, d)
+
+		keywords2 = append(keywords2, kw)
+		keywords2 = append(keywords2, fmt.Sprintf("<a href=\"%s\">%s</a>", path, html.EscapeString(kw)))
+		// Data = [
+		// 	keyword, url,
+		// 	keyword, url,
+		// 	keyword, url,
+		// 	keyword, url,
+		// 	keyword, url,
+		// 	keyword, url,
+		// ]
 	}
 
+	re := strings.NewReplacer(...keywords2)
+	content = re.Replace(content)
+	
 	// content内に存在したkeywordのリスト
-	hasKeywords := make([]Data, 0, 500)
+	// hasKeywords := make([]Data, 0, 500)
 	// content内のkeywordを検出してhashに置き換え, このときに一致したkeywordだけのリストを作っておく
 	//   L for range で keyword
 	// 500 loop
-	for _, d := range keywords2 {
-		// d.Keywordがcontent内に存在するか
-		// contains の速さしだい
+	// for _, d := range keywords2 {
+	// 	// d.Keywordがcontent内に存在するか
+	// 	// contains の速さしだい
 
-		// 含まれていないときはskip
-		if !strings.Contains(content, d.Keyword) {
-			continue
-		}
+	// 	// 含まれていないときはskip
+	// 	if !strings.Contains(content, d.Keyword) {
+	// 		continue
+	// 	}
 
-		// 存在していればhashに置き換える
-		// contentの中にd.keywordがあったら、その文字をd.Hashに変換する
-		content = strings.ReplaceAll(content, d.Keyword, d.Hash)
+	// 	// 存在していればhashに置き換える
+	// 	// contentの中にd.keywordがあったら、その文字をd.Hashに変換する
+	// 	content = strings.ReplaceAll(content, d.Keyword, d.Hash)
 
-		// 置き換えた場合は一致リストにdを入れておく
-		hasKeywords = append(hasKeywords, d)
-	}
+	// 	// 置き換えた場合は一致リストにdを入れておく
+	// 	hasKeywords = append(hasKeywords, d)
+	// }
 
 	// 一致したkeywordのリストをもとにhashからリンクに置き換え
-	for _, d := range hasKeywords {
-		// 含まれていないときはskip
-		if !strings.Contains(content, d.Hash) {
-			continue
-		}
+	// for _, d := range hasKeywords {
+	// 	// 含まれていないときはskip
+	// 	if !strings.Contains(content, d.Hash) {
+	// 		continue
+	// 	}
 
-		// 存在していればhashに置き換える
-		// contentの中にd.keywordがあったら、その文字をd.Hashに変換する
-		content = strings.ReplaceAll(content, d.Hash, d.Url)
-	}
+	// 	// 存在していればhashに置き換える
+	// 	// contentの中にd.keywordがあったら、その文字をd.Hashに変換する
+	// 	content = strings.ReplaceAll(content, d.Hash, d.Url)
+	// }
 	log.Println(content)
+
+
+	
 	// re := regexp.MustCompile("(" + strings.Join(keywords, "|") + ")")
 	// kw2sha := make(map[string]string)
 	// content = re.ReplaceAllStringFunc(content, func(kw string) string {
