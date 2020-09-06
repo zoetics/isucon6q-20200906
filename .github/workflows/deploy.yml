@@ -18,7 +18,10 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          instance-ids: ${{ secrets.INSTANCE_ID }}
+          instance-ids: |
+            i-0210d14f68a978eba
+            i-02921c61b29e01dd2
+            i-0ce4a0f69269ac5c7
 
           working-directory: /home/isucon/isucon6q-20200906
           command: git checkout master
@@ -30,7 +33,10 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          instance-ids: ${{ secrets.INSTANCE_ID }}
+          instance-ids: |
+            i-0210d14f68a978eba
+            i-02921c61b29e01dd2
+            i-0ce4a0f69269ac5c7
 
           working-directory: /home/isucon/isucon6q-20200906
           command: git pull origin master 
@@ -42,7 +48,10 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          instance-ids: ${{ secrets.INSTANCE_ID }}
+          instance-ids: |
+            i-0210d14f68a978eba
+            i-02921c61b29e01dd2
+            i-0ce4a0f69269ac5c7
 
           working-directory: /home/isucon/isucon6q-20200906/webapp
           command: make
