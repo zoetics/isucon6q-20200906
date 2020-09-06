@@ -14,7 +14,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"regexp"
 	"strconv"
 	"strings"
 
@@ -329,7 +328,7 @@ func htmlify(w http.ResponseWriter, r *http.Request, content string) string {
 	type Data struct {
 		Keyword string
 		// Hash    string
-		Url     string
+		Url string
 	}
 
 	keywords2 := make([]string, 0, 1000)
@@ -357,7 +356,7 @@ func htmlify(w http.ResponseWriter, r *http.Request, content string) string {
 
 	re := strings.NewReplacer(keywords2...)
 	content = re.Replace(content)
-	
+
 	// content内に存在したkeywordのリスト
 	// hasKeywords := make([]Data, 0, 500)
 	// content内のkeywordを検出してhashに置き換え, このときに一致したkeywordだけのリストを作っておく
@@ -393,8 +392,6 @@ func htmlify(w http.ResponseWriter, r *http.Request, content string) string {
 	// }
 	log.Println(content)
 
-
-	
 	// re := regexp.MustCompile("(" + strings.Join(keywords, "|") + ")")
 	// kw2sha := make(map[string]string)
 	// content = re.ReplaceAllStringFunc(content, func(kw string) string {
