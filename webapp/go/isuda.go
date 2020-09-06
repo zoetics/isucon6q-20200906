@@ -308,6 +308,7 @@ func keywordByKeywordDeleteHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func htmlify(w http.ResponseWriter, r *http.Request, content string) string {
+
 	if content == "" {
 		return ""
 	}
@@ -324,9 +325,30 @@ func htmlify(w http.ResponseWriter, r *http.Request, content string) string {
 	}
 	rows.Close()
 
+	type Data struct {
+		Keyword string
+		Hash string
+		Url string
+	}
+
+	keywords2 := make([]Data, 0, 500)
+
 	keywords := make([]string, 0, 500)
+
+
 	for _, entry := range entries {
+
 		keywords = append(keywords, regexp.QuoteMeta(entry.Keyword))
+
+		kw := regexp.QuoteMeta(entry.Keyword)
+
+		d:= Data{ 
+			Keyword: kw,
+			Hash: "isuda_" + fmt.Sprintf("%x", sha1.Sum([]byte(kw)))
+			Url: fmt.Sprintf("<a href=\"%s\">%s</a>", r.URL.Parse(baseUrl.String()+"/keyword/" + pathURIEscape(kw)), html.EscapeString(kw))
+		}
+
+		keywords2 = append(keywords,d)	
 	}
 	re := regexp.MustCompile("("+strings.Join(keywords, "|")+")")
 	kw2sha := make(map[string]string)
@@ -335,6 +357,9 @@ func htmlify(w http.ResponseWriter, r *http.Request, content string) string {
 		return kw2sha[kw]
 	})
 	content = html.EscapeString(content)
+	log.Println("kw2sha:"+ kw2sha)
+	log.Println("~~~~~~~~~~~~")
+	log.Println(keywords2)
 	for kw, hash := range kw2sha {
 		u, err := r.URL.Parse(baseUrl.String()+"/keyword/" + pathURIEscape(kw))
 		panicIf(err)
