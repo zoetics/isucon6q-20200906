@@ -28,12 +28,13 @@ func initializeHandler(w http.ResponseWriter, r *http.Request) {
 
 func starsHandler(w http.ResponseWriter, r *http.Request) {
 	keyword := r.FormValue("keyword")
-	rows, err := db.Query(`SELECT * FROM star WHERE keyword = ?`, keyword)
+	rows, err := db.Query(`SELECT * FROM star WHERE keyword = ?`, keyword)// rows.Scan(&s.ID, &s.Keyword, &s.UserName, &s.CreatedAt)
 	if err != nil && err != sql.ErrNoRows {
 		panicIf(err)
 		return
 	}
 
+	// N+1? (件数絞ってとって来れる？)
 	stars := make([]Star, 0, 10)
 	for rows.Next() {
 		s := Star{}
