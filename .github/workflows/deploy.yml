@@ -35,7 +35,7 @@ jobs:
           instance-ids: ${{ secrets.INSTANCE_ID_1 }}
 
           working-directory: /home/isucon/isucon6q-20200906
-          command: id
+          command: source /root/.bashrc
 
       - name: exec git checkout master for app1
         uses: peterkimzz/aws-ssm-send-command@1.0.4
