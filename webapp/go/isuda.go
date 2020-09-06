@@ -340,7 +340,7 @@ func htmlify(w http.ResponseWriter, r *http.Request, content string) string {
 
 		keywords = append(keywords, regexp.QuoteMeta(entry.Keyword))
 
-		kw := regexp.QuoteMeta(entry.Keyword)
+		kw := entry.Keyword
 
 		path, _ := r.URL.Parse(baseUrl.String() + "/keyword/" + pathURIEscape(kw))
 		d := Data{
