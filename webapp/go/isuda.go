@@ -354,6 +354,7 @@ func htmlify(w http.ResponseWriter, r *http.Request, content string) string {
 	hasKeywords := make([]Data, 0, 500)
 	// content内のkeywordを検出してhashに置き換え, このときに一致したkeywordだけのリストを作っておく
 	//   L for range で keyword
+	// 500 loop
 	for _, d := range keywords2 {
 		// d.Keywordがcontent内に存在するか
 		// contains の速さしだい
@@ -370,12 +371,19 @@ func htmlify(w http.ResponseWriter, r *http.Request, content string) string {
 		// 置き換えた場合は一致リストにdを入れておく
 		hasKeywords = append(hasKeywords, d)
 	}
-	log.Println(content)
+
 	// 一致したkeywordのリストをもとにhashからリンクに置き換え
-	// for _, d := range hasKeywords {
+	for _, d := range hasKeywords {
+		// 含まれていないときはskip
+		if !strings.Contains(content, d.Hash) {
+			continue
+		}
 
-	// }
-
+		// 存在していればhashに置き換える
+		// contentの中にd.keywordがあったら、その文字をd.Hashに変換する
+		content = strings.ReplaceAll(content, d.Hash, d.Url)
+	}
+	log.Println(content)
 	// re := regexp.MustCompile("(" + strings.Join(keywords, "|") + ")")
 	// kw2sha := make(map[string]string)
 	// content = re.ReplaceAllStringFunc(content, func(kw string) string {
